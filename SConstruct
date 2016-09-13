@@ -17,12 +17,12 @@ idir_bin    = '$PREFIX/bin'
 Export('env idir_prefix idir_bin')
 
 platform = sys.platform
-lib_path = ['/usr/local/lib', '/usr/lib']
+lib_path = ['/usr/local/lib', '/usr/lib', '/usr/local/opt/libpcap/lib']
 libs = Glob('./*.a') + ['pcap']
 cpp_path=['.']
 
 if platform == 'darwin':
-      env.Append(CPPFLAGS=['-Ddarwin'])
+      env.Append(CPPFLAGS=['-Ddarwin', '/usr/local/opt/libpcap/include'])
 
 # Compile the programs
 pkt2flow = env.Program(target = './pkt2flow', 

@@ -430,9 +430,12 @@ static void process_trace(void)
 			pair->pdf.file_name = fname;
 			pair->pdf.start_time = hdr.ts.tv_sec;
 		} else {
-			if (hdr.ts.tv_sec - pair->pdf.start_time >= FLOW_TIMEOUT) {
+			if (((hdr.ts.tv_sec - pair->pdf.start_time) > FLOW_TIMEOUT) ||
+					((hdr.ts.tv_sec - pair->pdf.start_time) > FLOW_LIFETIME)) {
 				// Rest the pair to start a new flow with the same 6-tuple, but with
 				// the different name and timestamp
+				// rgarcia: modify to include the flow lifetime constraint 
+				//
 				reset_pdf(&(pair->pdf));
 				fname = new_file_name(af_6tuple, hdr.ts.tv_sec);
 				pair->pdf.file_name = fname;
