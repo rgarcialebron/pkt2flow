@@ -1,9 +1,8 @@
 pkt2flow
 ========
 
-[![Build Status](https://travis-ci.org/caesar0301/pkt2flow.svg?branch=master)](https://travis-ci.org/caesar0301/pkt2flow)
 
-by chenxm, Shanghai Jiao Tong Univ.
+Created by chenxm, Shanghai Jiao Tong Univ.
 chenxm35@gmail.com
 
 2012-12
@@ -24,7 +23,20 @@ The inner function of this program behaves using the 4-tuple (src_ip, dst_ip, sr
 to seperate the packets into TCP or UDP flows. Each flow will be saved into a pcap 
 file named with 4-tuple and the timestamp of the first packet of the flow. The packets are 
 saved in the order as read from the source. Any further processing like TCP resembling is
-not performed. The flow timeout is considered as 30 minutes which can be changed in pkt2flow.h.
+not performed.
+
+
+
+
+Modify by rgarcia, University of Texas at San Antonio
+richard (dot) garcialebron (at) utsa (dot) edu
+
+2016-09
+
+The flow timeout is considered as 60 seconds, a flow will expire if there is no 
+activity for 60 seconds. The flow lifetime is set for 300 seconds, a flow will 
+not span over 300 seconds. Both the flow timeout and flow lifetime can be changed
+in pkt2flow.h.
 
 
 How to compile
@@ -69,4 +81,8 @@ Usage: ./pkt2flow [-huvx] [-o outdir] pcapfile
 		-v	also dump the in(v)alid TCP flows without the SYN option
 		-x	also dump non-UDP/non-TCP IP flows
 		-o	(o)utput directory
+
+TODO:
+--------
+1) Pass flow timeout and flow lifetime as parameter.
 
