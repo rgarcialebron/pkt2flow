@@ -79,6 +79,7 @@ void reset_pdf(struct pkt_dump_file *f)
 {
 	f->pkts = 0;
 	f->start_time = 0;
+	f->prev_pkt_time = 0;
 	f->status = STS_UNSET;
 	free(f->file_name);
 	f->file_name = NULL;

@@ -375,7 +375,7 @@ static void process_trace(void)
 	u_char *pkt = NULL;
 	char *fname = NULL;
 	struct af_6tuple af_6tuple;
-
+	long double prev_pkt_time; //rgarcia: support FLOW_TIMEOUT and FLOW_LIFETIME
 	while ((pkt = (u_char *)pcap_next(inputp, &hdr)) != NULL) {
 		syn_detected = pcap_handle_ethernet(&af_6tuple, &hdr, pkt);
 		if (syn_detected < 0)
@@ -428,10 +428,12 @@ static void process_trace(void)
 			// A new flow item reated with empty dump file object
 			fname = new_file_name(af_6tuple, hdr.ts.tv_sec);
 			pair->pdf.file_name = fname;
-			pair->pdf.start_time = hdr.ts.tv_sec;
+			pair->pdf.start_time = hdr.ts.tv_sec; // holds the time of the initial pkt in the flow
+			pair->pdf.prev_pkt_time = hdr.ts.tv_sec; // prev_pkt_time init 
 		} else {
-			if (((hdr.ts.tv_sec - pair->pdf.start_time) > FLOW_TIMEOUT) ||
-					((hdr.ts.tv_sec - pair->pdf.start_time) > FLOW_LIFETIME)) {
+			
+			if (((hdr.ts.tv_sec - pair->pdf.prev_pkt_time) > FLOW_TIMEOUT) || // time between pkts don't exceed FLOW_TIMEOUT
+					((hdr.ts.tv_sec - pair->pdf.start_time) > FLOW_LIFETIME)) {// flow duration don't exceed FLOW_LIFETIME
 				// Rest the pair to start a new flow with the same 6-tuple, but with
 				// the different name and timestamp
 				// rgarcia: modify to include the flow lifetime constraint 
@@ -440,7 +442,7 @@ static void process_trace(void)
 				fname = new_file_name(af_6tuple, hdr.ts.tv_sec);
 				pair->pdf.file_name = fname;
 				pair->pdf.start_time = hdr.ts.tv_sec;
-
+				pair->pdf.prev_pkt_time = hdr.ts.tv_sec;
 				switch (af_6tuple.protocol) {
 				case IPPROTO_TCP:
 					if (syn_detected)
@@ -456,6 +458,7 @@ static void process_trace(void)
 					break;
 				}
 			}
+			pair->pdf.prev_pkt_time = hdr.ts.tv_sec; 
 		}
 
 		// Dump the packet to file and close the file

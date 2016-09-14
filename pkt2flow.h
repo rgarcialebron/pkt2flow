@@ -67,6 +67,7 @@ struct pkt_dump_file {
 
 	enum pkt_dump_file_status status;
 	unsigned long start_time;
+	unsigned long prev_pkt_time;
 };
 
 /* VLAN header, IEEE 802.1Q */
