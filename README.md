@@ -28,8 +28,8 @@ not performed.
 
 
 
-Modify by rgarcia, University of Texas at San Antonio
-richard (dot) garcialebron (at) utsa (dot) edu
+Modify by rgarcialebron, University of Texas at San Antonio
+richard.garcialebron@utsa.edu
 
 2016-09
 
