@@ -36,7 +36,8 @@ richard.garcialebron@utsa.edu
 The flow timeout is considered as 60 seconds, a flow will expire if there is no 
 activity for 60 seconds. The flow lifetime is set for 300 seconds, a flow will 
 not span over 300 seconds. Both the flow timeout and flow lifetime can be changed
-in pkt2flow.h.
+in pkt2flow.h. For more details about the flow timeout and flow lifetime look at:
+http://doi.ieeecomputersociety.org/10.1109/NPC.2008.82
 
 
 How to compile
