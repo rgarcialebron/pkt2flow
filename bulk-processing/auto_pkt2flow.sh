@@ -1,5 +1,5 @@
 #!/bin/bash
-
+#arguments: <file> <start-line-number> <finish-line-number> <directory>
 for i in `seq $2 $3`
 do
     line=$(sed $i'q;d' $1)
