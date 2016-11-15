@@ -101,8 +101,17 @@ static void parseargs(int argc, char *argv[])
 		}
 	}
 
-	if (optind < argc)
+	char *outdir, *lastdot;
+	if (optind < argc) {
 		readfile = argv[optind];
+	    if ((outdir = malloc(strlen(readfile) + 1)) != NULL ) {
+			strcpy(outdir, readfile);
+			if ((lastdot = strrchr(outdir, '.')) != NULL) {
+				*lastdot = '\0';
+				outputdir = outdir;
+			}
+	    }
+	}
 	if (readfile == NULL) {
 		fprintf(stderr, "pcap file not given\n");
 		usage(argv[0]);
