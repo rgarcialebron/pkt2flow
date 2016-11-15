@@ -54,7 +54,7 @@
 static uint32_t dump_allowed;
 static char *readfile = NULL;
 //char *interface = NULL;
-static char *outputdir = "pkt2flow.out";
+static char *outputdir = NULL;
 static pcap_t *inputp = NULL;
 struct ip_pair *pairs[HASH_TBL_SIZE];
 
@@ -104,13 +104,17 @@ static void parseargs(int argc, char *argv[])
 	char *outdir, *lastdot;
 	if (optind < argc) {
 		readfile = argv[optind];
-	    if ((outdir = malloc(strlen(readfile) + 1)) != NULL ) {
-			strcpy(outdir, readfile);
-			if ((lastdot = strrchr(outdir, '.')) != NULL) {
-				*lastdot = '\0';
-				outputdir = outdir;
-			}
-	    }
+		if (outputdir == NULL) {
+		    if ( (outdir = malloc(strlen(readfile) + 1)) != NULL ) {
+				strcpy(outdir, readfile);
+				if ((lastdot = strrchr(outdir, '.')) != NULL) {
+					*lastdot = '\0';
+					outputdir = outdir;
+				}
+		    } else {
+		    	outputdir = "pkt2flow.out";
+		    }
+		}
 	}
 	if (readfile == NULL) {
 		fprintf(stderr, "pcap file not given\n");
